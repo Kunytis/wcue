@@ -1,4 +1,26 @@
-# ЭТО ЕКЗАМЕН НО Я ИСПОЛЬЗОВАЛА ДРУГОЙ ПРОЕКТ ДЩЛЯ ТЕСТА ЧТО БЫ НИЧЕГО НЕ МЕШАЛО!!!!!!
+# ЭТО ПРОСТО ТЕСТ ЭТО НЕ ПРОГРАММА ЭТО ПРОСТО ТЕСТ ЭТО НЕ ПРОГРАММА ЕКЗАМЕН В revive.py!!!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -17,7 +39,7 @@ class ManagerFCIT:
         if url not in self.sites:
             self.sites.append(url)
         else:
-            print(f"error, {url} already exists!")
+            print("error, {url} already exists! ")
 
     def get_sites(self):
         return self.sites
@@ -27,20 +49,20 @@ class ManagerFCIT:
             self.url = url
             self.content = self.site_content()
 
-        def site_content(self):
-            try:
-                response = requests.get(self.url)
-                response.raise_for_status()
-                soup = BeautifulSoup(response.text, 'html.parser')
-                return soup.get_text().lower()
-            except requests.exceptions.RequestException:
-                print("Error, (Iryna was here)")  # This can be a custom error message
-                return ''
+    def site_content(self):
+        try:
+            response = requests.get(self.url)
+            response.raise_for_status()
+            soup = BeautifulSoup(response.text, 'html.parser')
+            return soup.get_text().lower()
+        except requests.exceptions.RequestException:
+            print("Error, (Iryna was here)")  # This can be a custom error message
+            return ''
 
-        def search(self, query):
-            if not self.content:
-                return 0
-            return len(re.findall(query.lower(), self.content))
+    def search(self, query):
+        if not self.content:
+            return 0
+        return len(re.findall(query.lower(), self.content))
 
     class UserInterface:
         def __init__(self, app):
@@ -72,38 +94,39 @@ class ManagerFCIT:
     class SearchApp:
         def __init__(self):
             self.site_manager = ManagerFCIT()
-            self.ui = ManagerFCIT.UserInterface(self)
+            self.site_parser = None
+            self.ui = UserInterface(self)
 
         def search_sites(self, query):
             results = []
             for site in self.site_manager.get_sites():
-                parser = ManagerFCIT.SiteParser(site)
+                parser = SiteParser(site)
                 matches = parser.search(query)
                 if matches > 0:
                     results.append((site, matches))
+
             return sorted(results, key=lambda x: x[1], reverse=True)
 
         def run(self):
             while True:
-                print("1. Add site")
-                print("2. Show all sites")
-                print("3. Search")
-                print("4. Exit")
+                print("1. add site")
+                print("2. show all sites")
+                print("3. search")
+                print("4. EXIN")
 
-                choice = input("Choose an option: ")
+                choise = input("choose smth")
 
-                if choice == '1':
+                if choise == '1':
                     self.ui.add_site()
-                elif choice == '2':
+                elif choise == '2':
                     self.ui.display_sites()
-                elif choice == '3':
+                elif choise == '3':
                     self.ui.search_sites()
-                elif choice == '4':
-                    print("Exiting...")
+                elif choise == '4':
+                    print("exiting...")
                     break
                 else:
-                    print("Invalid choice, please try again.")
-
+                    print("try choosing something!")
 
 app = ManagerFCIT.SearchApp()
 app.run()
